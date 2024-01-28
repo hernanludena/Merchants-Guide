@@ -4,6 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.stream.Collectors;
+
 import com.hludena.service.ExpressionProcessingService;
 
 /**
@@ -15,16 +19,22 @@ public class MerchantsGuideApp {
 
         ExpressionProcessingService processingService = new ExpressionProcessingService();
 
-        String fileName = "C:/develop/java/IDEA/fisa/MerchantsGuideToTheGalaxyM/src/main/resources/InpuText.txt";
+        String fileName = "/InputText.txt"; // Nombre del archivo en resources
 
         // Uso de Try-con-Recursos para el manejo automático del cierre de recursos.
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+        try (InputStream inputStream = MerchantsGuideApp.class.getResourceAsStream(fileName);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            
+            if (inputStream == null) {
+                throw new IllegalArgumentException("Archivo no encontrado: " + fileName);
+            }
+
             String line;
             while ((line = reader.readLine()) != null) {
-                 processingService.processLine(line);
+                processingService.processLine(line);
             }
-        } catch (FileNotFoundException e) {
-            System.err.println("Archivo no encontrado: " + fileName);
+        } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
             System.err.println("Error al leer el archivo: " + fileName);
