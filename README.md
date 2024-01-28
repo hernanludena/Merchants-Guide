@@ -85,7 +85,25 @@ Para resolver el problema de convertir números intergalácticos a números roma
 
 
  
-2.2	Solución
+3.	Solución
 
 Se plantea crear un programa que contenga utilitarios para el manejo de los números romanos, así como diccionarios de datos, reglas de conversión de números romanos, conversores de lenguaje y procesadores de preguntas.
+
+
+4. Ejecución
+
+Al ser un código listo para producción debe ejecutarse directo desde la terminal usando los comandos:
+
+**Para ejecución directa:**
+-	Descargar proyecto de Github: https://github.com/hernanludena/Merchants-Guide
+-	Ubicarse en el path principal del proyecto, carpeta dist donde el artefacto generado: Ejemplo
+C:\Merchants-Guide\dist
+-	Levantar la aplicación indicando el path del archivo de entrada
+	java -jar .\target\MerchantsGuideToTheGalaxyM-1.0-SNAPSHOT.jar ./src/main/resources/InputText.txt
+
+**Ejecucion desde Windows**, si se desea ejecutar el jar desde otro Sistema Operativo tomar en consideración el ajuste de los slash / para el mapeo del archivo de entrada
+-	Para validar las pruebas unitarias se debe construir el proyecto
+-	Abrir con un IDE y desde la terminal construir artefacto usando Maven: mvn clean package 
+	
+
 
