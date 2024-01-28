@@ -17,27 +17,24 @@ public class MerchantsGuideApp {
 
     public static void main(String[] args) {
 
+        if (args.length < 1) {
+            System.err.println("Por favor, proporciona la ruta del archivo de texto.");
+            return;
+        }
+
+        //String fileName = "/InputText.txt"; // Nombre del archivo en resources
+        String filePath = args[0];
+
         ExpressionProcessingService processingService = new ExpressionProcessingService();
 
-        String fileName = "/InputText.txt"; // Nombre del archivo en resources
-
         // Uso de Try-con-Recursos para el manejo automático del cierre de recursos.
-        try (InputStream inputStream = MerchantsGuideApp.class.getResourceAsStream(fileName);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-            
-            if (inputStream == null) {
-                throw new IllegalArgumentException("Archivo no encontrado: " + fileName);
-            }
-
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 processingService.processLine(line);
             }
-        } catch (IllegalArgumentException e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
         } catch (IOException e) {
-            System.err.println("Error al leer el archivo: " + fileName);
+            System.err.println("Error al leer el archivo: " + filePath);
             e.printStackTrace();
         }
     }
