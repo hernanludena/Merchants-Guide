@@ -2,6 +2,7 @@ package com.hludena.processors;
 
 import com.hludena.converters.IAlienLanguageConverter;
 import com.hludena.converters.IRomanToArabicConverter;
+import com.hludena.service.ExpressionProcessingService;
 
 /**
  * Se encarga de procesar y responder a preguntas sobre el valor
@@ -12,9 +13,9 @@ public class HowMuchQuestionProcessor {
     private final IRomanToArabicConverter romanConverter;
     private final IAlienLanguageConverter alienLanguageConverter;
 
-    public HowMuchQuestionProcessor(IRomanToArabicConverter romanConverter, IAlienLanguageConverter alienLanguageConverter) {
-        this.romanConverter = romanConverter;
-        this.alienLanguageConverter = alienLanguageConverter;
+    public HowMuchQuestionProcessor(ExpressionProcessingService expressionProcessingService) {
+        this.romanConverter = expressionProcessingService.getRomanToArabicConverter();;
+        this.alienLanguageConverter = expressionProcessingService.getLanguageConverter();
     }
 
     /**

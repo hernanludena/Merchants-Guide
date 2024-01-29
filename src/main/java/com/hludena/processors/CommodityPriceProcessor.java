@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.hludena.converters.IAlienLanguageConverter;
 import com.hludena.converters.IRomanToArabicConverter;
+import com.hludena.service.ExpressionProcessingService;
 
 /**
  * La clase se encarga de procesar líneas de texto
@@ -19,9 +20,9 @@ public class CommodityPriceProcessor {
     //Diccionario de precios de mercancias
     public static Map<String, Double> dictionaryCommodityPrices = new HashMap<>();
 
-    public CommodityPriceProcessor(IRomanToArabicConverter romanConverter, IAlienLanguageConverter alienLanguageConverter) {
-        this.romanConverter = romanConverter;
-        this.alienLanguageConverter = alienLanguageConverter;
+    public CommodityPriceProcessor( ExpressionProcessingService expressionProcessingService) {
+        this.romanConverter = expressionProcessingService.getRomanToArabicConverter();
+        this.alienLanguageConverter = expressionProcessingService.getLanguageConverter();
     }
 
     /**

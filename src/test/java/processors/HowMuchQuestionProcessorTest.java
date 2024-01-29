@@ -12,30 +12,33 @@ import org.mockito.MockitoAnnotations;
 import com.hludena.converters.IAlienLanguageConverter;
 import com.hludena.converters.IRomanToArabicConverter;
 import com.hludena.processors.HowMuchQuestionProcessor;
+import com.hludena.service.ExpressionProcessingService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 public class HowMuchQuestionProcessorTest {
 
-    //Simula Conversores
+    @Mock
+    private ExpressionProcessingService expressionProcessingService;
+
     @Mock
     private IRomanToArabicConverter romanConverter;
 
     @Mock
     private IAlienLanguageConverter alienLanguageConverter;
 
-    //Clase a testear
     private HowMuchQuestionProcessor processor;
 
-    //Variables para capturar salida de consola
     private final PrintStream originalOut = System.out;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        processor = new HowMuchQuestionProcessor(romanConverter, alienLanguageConverter);
+        when(expressionProcessingService.getRomanToArabicConverter()).thenReturn(romanConverter);
+        when(expressionProcessingService.getLanguageConverter()).thenReturn(alienLanguageConverter);
+        processor = new HowMuchQuestionProcessor(expressionProcessingService);
 
         // Simula la salida de System.out para capturar declaraciones impresas
         System.setOut(new PrintStream(outContent));
@@ -51,7 +54,7 @@ public class HowMuchQuestionProcessorTest {
         processor.processHowMuchQuestion("how much is glob prok ?");
 
         // Verifica la salida impresa
-        String expectedOutput = "glob prok es 10";
+        String expectedOutput = "glob prok es 10"; // Incluye el salto de línea al final
         assertEquals(expectedOutput, outContent.toString().trim());
 
         // Verifica que se llamen los métodos de las dependencias

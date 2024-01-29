@@ -13,22 +13,51 @@ import com.hludena.romans.RomanNumeralUtils;
 public class ExpressionProcessingService {
 
     private final ExpressionParser parser;
+    private IAlienLanguageConverter languageConverter;
+    private IRomanToArabicConverter romanToArabicConverter;
+    private CommodityPriceProcessor commodityPriceProcessor;
+    private HowManyCreditsQuestionProcessor howManyCreditsQuestionProcessor;
+    private HowMuchQuestionProcessor howMuchQuestionProcessor;
+
 
     /**
      * Inicializa las dependencias necesarias para el procesamiento de expresiones,
      * incluyendo convertidores de lenguaje y numerales romanos, y el analizador de expresiones.
      */
     public ExpressionProcessingService() {
-        IAlienLanguageConverter languageConverter = new AlienLanguageConverter();
-        IRomanToArabicConverter romanToArabicConverter = new RomanToArabicConverter(RomanNumeralUtils.getInstance().getRomanNumerals());
+        languageConverter = new AlienLanguageConverter();
+        romanToArabicConverter = new RomanToArabicConverter(RomanNumeralUtils.getInstance().getRomanNumerals());
 
-        CommodityPriceProcessor commodityPriceProcessor = new CommodityPriceProcessor(romanToArabicConverter,languageConverter);
-        HowManyCreditsQuestionProcessor howManyCreditsQuestionProcessor = new HowManyCreditsQuestionProcessor(romanToArabicConverter,languageConverter);
-        HowMuchQuestionProcessor howMuchQuestionProcessor = new HowMuchQuestionProcessor(romanToArabicConverter,languageConverter);
+        commodityPriceProcessor = new CommodityPriceProcessor(this);
+        howManyCreditsQuestionProcessor = new HowManyCreditsQuestionProcessor(this);
+        howMuchQuestionProcessor = new HowMuchQuestionProcessor(this);
 
-        parser = new ExpressionParser(languageConverter, romanToArabicConverter,commodityPriceProcessor,howManyCreditsQuestionProcessor,howMuchQuestionProcessor);
+        parser = new ExpressionParser(this);
 
+    }
 
+    public IAlienLanguageConverter getLanguageConverter() {
+        return languageConverter;
+    }
+
+    public ExpressionParser getParser() {
+        return parser;
+    }
+
+    public IRomanToArabicConverter getRomanToArabicConverter() {
+        return romanToArabicConverter;
+    }
+
+    public CommodityPriceProcessor getCommodityPriceProcessor() {
+        return commodityPriceProcessor;
+    }
+
+    public HowManyCreditsQuestionProcessor getHowManyCreditsQuestionProcessor() {
+        return howManyCreditsQuestionProcessor;
+    }
+
+    public HowMuchQuestionProcessor getHowMuchQuestionProcessor() {
+        return howMuchQuestionProcessor;
     }
 
     public void processLine(String line) {

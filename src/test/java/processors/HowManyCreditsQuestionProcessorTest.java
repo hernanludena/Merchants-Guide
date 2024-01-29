@@ -13,6 +13,7 @@ import com.hludena.converters.IAlienLanguageConverter;
 import com.hludena.converters.IRomanToArabicConverter;
 import com.hludena.processors.CommodityPriceProcessor;
 import com.hludena.processors.HowManyCreditsQuestionProcessor;
+import com.hludena.service.ExpressionProcessingService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -20,14 +21,15 @@ import java.util.HashMap;
 
 public class HowManyCreditsQuestionProcessorTest {
 
-    //Simulamos Convertidores
+    @Mock
+    private ExpressionProcessingService expressionProcessingService;
+
     @Mock
     private IRomanToArabicConverter romanConverter;
 
     @Mock
     private IAlienLanguageConverter alienLanguageConverter;
 
-    //Clase a testear
     private HowManyCreditsQuestionProcessor processor;
 
     private final PrintStream originalOut = System.out;
@@ -36,7 +38,9 @@ public class HowManyCreditsQuestionProcessorTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        processor = new HowManyCreditsQuestionProcessor(romanConverter, alienLanguageConverter);
+        when(expressionProcessingService.getRomanToArabicConverter()).thenReturn(romanConverter);
+        when(expressionProcessingService.getLanguageConverter()).thenReturn(alienLanguageConverter);
+        processor = new HowManyCreditsQuestionProcessor(expressionProcessingService);
 
         // Simula la salida de System.out para capturar declaraciones impresas
         System.setOut(new PrintStream(outContent));

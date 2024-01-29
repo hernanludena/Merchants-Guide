@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import com.hludena.converters.IAlienLanguageConverter;
 import com.hludena.converters.IRomanToArabicConverter;
+import com.hludena.service.ExpressionProcessingService;
 
 /**
  * Se encarga de procesar y responder preguntas
@@ -14,9 +15,9 @@ public class HowManyCreditsQuestionProcessor{
     private final IRomanToArabicConverter romanConverter;
     private final IAlienLanguageConverter alienLanguageConverter;
 
-    public HowManyCreditsQuestionProcessor(IRomanToArabicConverter romanConverter, IAlienLanguageConverter alienLanguageConverter) {
-        this.romanConverter = romanConverter;
-        this.alienLanguageConverter = alienLanguageConverter;
+    public HowManyCreditsQuestionProcessor(ExpressionProcessingService expressionProcessingService) {
+        this.romanConverter = expressionProcessingService.getRomanToArabicConverter();
+        this.alienLanguageConverter = expressionProcessingService.getLanguageConverter();
     }
 
     /**

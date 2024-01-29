@@ -6,6 +6,7 @@ import com.hludena.processors.CommodityPriceProcessor;
 import com.hludena.processors.HowManyCreditsQuestionProcessor;
 import com.hludena.processors.HowMuchQuestionProcessor;
 import com.hludena.romans.RomanNumeralUtils;
+import com.hludena.service.ExpressionProcessingService;
 
 
 /**
@@ -28,15 +29,11 @@ public class ExpressionParser {
     private boolean processed = false;
     
 
-    public ExpressionParser(IAlienLanguageConverter languageConverter,
-                            IRomanToArabicConverter romanConverter, 
-                            CommodityPriceProcessor commodityPriceProcessor, 
-                            HowManyCreditsQuestionProcessor howManyCreditsQuestionProcessor,
-                             HowMuchQuestionProcessor howMuchQuestionProcessor) {
-        this.languageConverter = languageConverter;
-        this.commodityPriceProcessor = commodityPriceProcessor;
-        this.howManyCreditsQuestionProcessor = howManyCreditsQuestionProcessor;
-        this.howMuchQuestionProcessor = howMuchQuestionProcessor;
+    public ExpressionParser(ExpressionProcessingService expressionProcessingService) {
+        this.languageConverter = expressionProcessingService.getLanguageConverter();
+        this.commodityPriceProcessor = expressionProcessingService.getCommodityPriceProcessor();
+        this.howManyCreditsQuestionProcessor = expressionProcessingService.getHowManyCreditsQuestionProcessor();
+        this.howMuchQuestionProcessor = expressionProcessingService.getHowMuchQuestionProcessor();
 
     }
 
@@ -67,7 +64,8 @@ public class ExpressionParser {
             languageConverter.addAlienWordToDictionary(parts);
             processed = true;
         } 
-        // Convierte los precios de mercancías y los guarda en un diccionario(Map)de precios de mercancías (Silver,3334)
+        // Crea un diccionario(Map)de precios de mercancías  (Silver,3334)
+        // Convierte los precios de mercancías y los guarda en un diccionario(Map)de precios de mercancías 
         else if (line.contains(CREDITS) && !line.startsWith(HOW_MANY_CREDITS_IS)) {
             commodityPriceProcessor.processCommodityPrice(line);
             processed = true;
